@@ -17,6 +17,13 @@ const config: Config = {
         md: '1.5rem',
         lg: '2rem'
       }
+    },
+    extend: {
+      backgroundColor: {
+        'custom_blue': '#63a8c7',
+        'custom_blueberry': '#0041C2',
+        'custom_gray': '#808080'
+      }
     }
   },
   plugins: [
