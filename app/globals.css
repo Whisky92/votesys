@@ -1,3 +1,35 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.timer_div {
+    margin: 2em;
+}
+
+.result_chart_margin {
+    margin: 30rem;
+}
+
+.main_section {
+    margin: 0 auto;
+    background-color: #f1f1f1;
+    padding-top: 7em;
+    height: 100vh;
+    box-shadow: 0 0 2em #71797E;
+    min-width: 1100px;
+    min-height: 600px;
+}
+
+.my_submit_btn {
+    margin-top: 1em;
+    width: 15em;
+    height: 4em;
+    color: white;
+    font-weight: bold;
+    font-size: 30px;
+    @apply rounded-full;
+}
+
+.candidate_img_div {
+    padding: 2em;
+}
