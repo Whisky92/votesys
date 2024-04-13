@@ -6,6 +6,8 @@ import timeContext from '@app/utils/time_context';
 import { useState, useEffect, useRef } from 'react';
 import { useContext } from 'react';
 import { votingTimeContext } from '@app/utils/is_voting_time_context';
+import VoteField from './vote_id_field/vote_id_field';
+import Voted from './already_voted';
 
 type propsType = {
     start_date: Date;
@@ -26,9 +28,9 @@ export default function Timer({start_date}: propsType) {
     useEffect(() => {
         const election_title = document.getElementById('election_title');
         if (election_title) {
-            election_title.innerHTML = isStartPeriod.current ? 
-                "Elections will begin in:" :
-                "Elections will end in:";
+            if (isStartPeriod.current) {
+                election_title.innerHTML = "Elections will begin in:";
+            }
         }
  
         if (timeLeft >= 1000) {
@@ -66,15 +68,23 @@ export default function Timer({start_date}: propsType) {
         let formattedMinutes = String(minutes).padStart(2, "0");
         let formattedSeconds = String(seconds).padStart(2, "0");
 
-        return timeLeft > 0 ? 
+        return (timeLeft > 0 && isStartPeriod.current) ? 
         `${formattedDays} days, ${formattedHours} hours, ${formattedMinutes} minutes, ${formattedSeconds} seconds` :
         "0 days, 0 hours, 0 minutes, 0 seconds";
     }
 
     return (
-        <section className="w-full flex flex-col pt-20">
-            <div className="text-center text-5xl font-bold italic mt-20 mb-20" id="election_title"></div>
-            <div className="text-center timer_div text-7xl italic">{getFormattedTime()}</div>
-        </section>
+        (isStartPeriod.current) ? 
+        (
+            <section className="w-full flex flex-col pt-20">
+                <div className="text-center text-5xl font-bold italic mt-20 mb-20" id="election_title"></div>
+                <div className="text-center timer_div text-7xl italic">{getFormattedTime()}</div>
+            </section> 
+        ) : (canSeeResults) ? 
+        (   
+            <section className="w-full flex flex-col items-center justify-center h-screen">
+                <div className="text-center text-7xl font-bold italic mt-20 mb-20">The voting has already ended</div>
+            </section> 
+        ) : (<VoteField />)
     );
 }

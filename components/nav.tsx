@@ -13,13 +13,9 @@ export default function Nav() {
   const {canVote, setCanVote,
          canSeeResults, setCanSeeResults} = useContext(votingTimeContext);
 
-  function openForm(event: MouseEvent<HTMLButtonElement>) {
+  function onHomePress(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
-    if (canVote) {
-      router.push("/vote_id_field");
-    } else {
-      alert("The voting already ended or it has not started yet!");
-    }
+    router.push("/");
   }
 
   function showResults(e: MouseEvent<HTMLButtonElement>) {
@@ -35,16 +31,11 @@ export default function Nav() {
     <>
       <Navbar className="w-full dark flex flex-row fixed top-0" maxWidth="full" isBlurred={false}>
         <NavbarBrand>
-          <Link href="/">
-            <p className="text-white text-xl font-bold italic">VoteSys</p>
-          </Link>
+          <button onClick={onHomePress} 
+                    className="text-white text-xl font-bold italic">VoteSys</button>
         </NavbarBrand>
         <NavbarContent className="flex flex-row">
-          <NavbarItem className="bg-white basis-1/2" />
-          <NavbarItem className="basis-1/4">
-            <button onClick={openForm} 
-                    className="text-white text-xl font-bold">Vote</button>
-          </NavbarItem>
+          <NavbarItem className="bg-white basis-3/4" />
           <NavbarItem className="basis-1/4">
             <button onClick={showResults}
                     className="text-white text-xl font-bold">Results</button>
