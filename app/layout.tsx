@@ -4,6 +4,8 @@ import { Inter } from 'next/font/google';
 import Providers from './utils/next_ui_provider';
 import Nav from '@components/nav';
 import IsVotingTimeProvider from './utils/is_voting_time_provider';
+import { TimeContextProvider } from './utils/time_context';
+import { useContext } from 'react';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,14 +22,16 @@ export default function RootLayout({
   return (
     <html lang='en' className='bg-custom_blue'>
     <body>
-      <IsVotingTimeProvider currentDate={new Date()}>
-          <Providers>
-              <Nav />
-              <main>
-                {children}
-              </main>
-          </Providers>
-      </IsVotingTimeProvider>
+      <TimeContextProvider>
+        <IsVotingTimeProvider currentDate={new Date()}>
+            <Providers>
+                <Nav />
+                <main>
+                  {children}
+                </main>
+            </Providers>
+        </IsVotingTimeProvider>
+      </TimeContextProvider>
     </body>
   </html>
   );

@@ -2,12 +2,13 @@
 
 // used source: https://www.youtube.com/watch?v=jPo0mIcNZfM
 
-import timeContext from '@app/utils/time_context';
 import { useState, useEffect, useRef } from 'react';
 import { useContext } from 'react';
 import { votingTimeContext } from '@app/utils/is_voting_time_context';
 import VoteField from './vote_id_field/vote_id_field';
 import Voted from './already_voted';
+import { timeContext } from '@app/utils/time_context';
+import axios from 'axios';
 
 type propsType = {
     start_date: Date;
@@ -15,8 +16,9 @@ type propsType = {
 
 export default function Timer({start_date}: propsType) {
     
-    const {vote_start, vote_end} = useContext(timeContext);
+    const {vote_start, setVoteStart, vote_end, setVoteEnd} = useContext(timeContext);
     const {canVote, setCanVote, canSeeResults, setCanSeeResults} = useContext(votingTimeContext);
+    console.log(vote_start);
     const [timeLeft, setTimeLeft] = useState(
         start_date < vote_start ?
         vote_start.getTime() - start_date.getTime() :

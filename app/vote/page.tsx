@@ -10,10 +10,10 @@ export default function Home() {
     const id = searchParams.get("id");
     console.log("megyen: " + id);
 
-
     return (
         <section className="w-3/4 max-w-full main_section">
-            { true ? (<MyForm />) : 
+            { true ? 
+            (<MyForm />) : 
             (<Voted />) }
         </section>
     );
