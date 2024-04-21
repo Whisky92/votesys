@@ -1,10 +1,9 @@
-import Image from "next/image";
-import Timer from "@components/timer";
+import TempComponent from "@components/temp_component";
 
 export default function Home() {
   return (
     <section className='w-full flex-center flex-col'>
-      <Timer start_date={ new Date() }/>
+      <TempComponent />
     </section>
   );
 }
