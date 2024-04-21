@@ -11,7 +11,7 @@ export default function TempComponent() {
     useEffect(() => {
           intervalIdRef.current = setInterval(() => {
               router.push("/timer");
-          }, 1000);
+          }, 500);
     
         return () => {
             clearInterval(intervalIdRef.current as NodeJS.Timeout);
