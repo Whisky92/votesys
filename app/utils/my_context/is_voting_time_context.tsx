@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext } from "react";
 
 type isVotingTimeType = {
     canVote: boolean | null;

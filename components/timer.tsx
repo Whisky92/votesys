@@ -4,11 +4,10 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useContext } from 'react';
-import { votingTimeContext } from '@app/utils/is_voting_time_context';
+import { votingTimeContext } from '@app/utils/my_context/is_voting_time_context'; 
 import VoteField from './vote_id_field/vote_id_field';
-import Voted from './already_voted';
-import { timeContext } from '@app/utils/time_context';
-import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { RootState } from '@app/utils/my_redux-store/store';
 
 type propsType = {
     start_date: Date;
@@ -16,7 +15,7 @@ type propsType = {
 
 export default function Timer({start_date}: propsType) {
     
-    const {vote_start, setVoteStart, vote_end, setVoteEnd} = useContext(timeContext);
+    const { vote_start, vote_end } = useSelector((state: RootState) => state.voteTime.value);
     const {canVote, setCanVote, canSeeResults, setCanSeeResults} = useContext(votingTimeContext);
     console.log(vote_start);
     const [timeLeft, setTimeLeft] = useState(

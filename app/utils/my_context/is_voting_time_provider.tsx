@@ -1,10 +1,10 @@
 'use client'
 
-import { ReactElement, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { votingTimeContext } from "./is_voting_time_context";
-import { useContext } from "react";
-import { timeContext } from "./time_context";
-import { VoteTime } from "./custom_types";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../my_redux-store/store";
+import { getVoteInterval } from "../my_redux-store/slices/intervalSlice";
 
 type ChildrenType = {
     currentDate: Date,
@@ -12,18 +12,26 @@ type ChildrenType = {
 }
 
 export default function IsVotingTimeProvider({currentDate, children} : ChildrenType) {
-    const {vote_start, setVoteStart, vote_end, setVoteEnd} = useContext(timeContext);
+
+    const count = useSelector((state: RootState) => state.voteTime.value);
+    const dispatch = useDispatch<AppDispatch>();
+
+    const { vote_start, vote_end } = useSelector((state: RootState) => state.voteTime.value);
+
 
     useEffect(() => {
-        setVoteStart(new Date(Date.parse('2024-04-20T13:39:00+02:00')));
-        setVoteEnd(new Date(Date.parse('2024-04-20T13:40:00+02:00')));
-    }, [])
+      dispatch(getVoteInterval());
+    }, []);
     
+    console.log("providerben vagyok");
     console.log(vote_start);
-    console.log(vote_end);
+    console.log("providerben vagyok");
+
+
     const isVotePossible = currentDate >= vote_start && currentDate <= vote_end;
     const [canVote, setCanVote] = useState<boolean | null>(isVotePossible);
     const [canSeeResults, setCanSeeResults] = useState<boolean | null>(currentDate > vote_end);
+    
     return (
         <votingTimeContext.Provider value={{canVote, setCanVote, canSeeResults, setCanSeeResults}}>
             {children}

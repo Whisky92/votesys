@@ -5,7 +5,7 @@ import React, { MouseEvent, useEffect } from "react";
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link} from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
-import { votingTimeContext } from "@app/utils/is_voting_time_context";
+import { votingTimeContext } from "@app/utils/my_context/is_voting_time_context"; 
 
 export default function Nav() {
   let ids: Array<string>;
