@@ -5,6 +5,7 @@ import styles from "./vote_id_field.module.css";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { error } from "console";
 
 interface MyFormElements extends HTMLFormControlsCollection {
     id_input_field: HTMLInputElement
@@ -36,17 +37,19 @@ export default function VoteField() {
     function handleSubmit(event: React.FormEvent<MyFormElements>) {
         event.preventDefault();
         const field = event.currentTarget.id_input_field;
-
+        console.log(field.value);
         axios.get(`http://localhost:5000/vote/${field.value}`)
         .then((response) => {
+            console.log(response.data);
             const status = response.data.status;
             if (status === "success") {
               router.push(`/vote?id=${field.value}`);
               closeForm();
-            } else {
-              alert("The given id is invalid!");
-              field.value = "";
             }
+        })
+        .catch((err) => {
+          alert("The given id is invalid!");
+          field.value = "";
         })
       }
 

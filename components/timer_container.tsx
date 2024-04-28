@@ -24,8 +24,8 @@ export default function TimerContainer({my_start_date}: propsType) {
                     const start = new Date(Date.parse(response.data.datetime));
                     const end = new Date(Date.parse(response.data.datetime));
                     const isVotePossible = my_start_date >= start && my_start_date <= end;
-                    start.setMinutes(55);
-                    end.setMinutes(58);
+                    start.setMinutes(46);
+                    end.setMinutes(55);
                     
                     dispatch(updateTime({ value: {
                         vote_start: start,

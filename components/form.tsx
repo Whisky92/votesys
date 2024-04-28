@@ -17,18 +17,44 @@ type propsType = {
 
 export default function MyForm({id}: propsType) {
 
+    type VoteType = {
+        message: string;
+        voter_id: string;
+    }   
+
     function sendVote(event: React.FormEvent<MyFormElements>) {
+        const trumpSelected = event.currentTarget.elements.donald_trump_radioBtn.checked;
+        const bidenSelected = event.currentTarget.elements.joe_biden_radioBtn.checked;
+        console.log(trumpSelected);
+        console.log(bidenSelected);
+        console.log(!trumpSelected && !bidenSelected);
+        console.log(typeof id);
+        console.log(id);
+        if (trumpSelected || bidenSelected) {
+            const selectedCandidate = trumpSelected ? "REP" : "DEM";
+            console.log(typeof selectedCandidate);
+            const requestBody = {
+                message: selectedCandidate,
+                voter_id: id
+              };
+            console.log(selectedCandidate);
+
+            axios.post<VoteType>("http://localhost:5000/vote/submit-vote", {
+                message: selectedCandidate,
+                voter_id: id
+            })
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        } else {
+            alert("Select a candidate!");
+        }
         event.preventDefault();
 
-        axios.post("http://localhost:5000/vote/submit-vote", {
-            "voter_id": id
-        })
-        .then((response) => {
-            console.log(response);
-        })
 
-
-        console.log("ASD");
     }
     
     return (
