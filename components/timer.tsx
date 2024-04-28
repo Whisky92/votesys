@@ -3,11 +3,10 @@
 // used source: https://www.youtube.com/watch?v=jPo0mIcNZfM
 
 import { useState, useEffect, useRef } from 'react';
-import { useContext } from 'react';
-import { votingTimeContext } from '@app/utils/my_context/is_voting_time_context'; 
 import VoteField from './vote_id_field/vote_id_field';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@app/utils/my_redux-store/store';
+import { changeCanSeeResults, changeCanVote } from '@app/utils/my_redux-store/slices/isVotingTimeSlice';
 
 type propsType = {
     start_date: Date;
@@ -16,8 +15,8 @@ type propsType = {
 export default function Timer({start_date}: propsType) {
     
     const { vote_start, vote_end } = useSelector((state: RootState) => state.voteTime.value);
-    const {canVote, setCanVote, canSeeResults, setCanSeeResults} = useContext(votingTimeContext);
-    console.log(vote_start);
+    const { canVote, canSeeResults } = useSelector((state: RootState) => state.isVotingTime.value);
+    const dispatch = useDispatch();
     const [timeLeft, setTimeLeft] = useState(
         start_date < vote_start ?
         vote_start.getTime() - start_date.getTime() :
@@ -42,14 +41,14 @@ export default function Timer({start_date}: propsType) {
             isStartPeriod.current = false;
             setTimeLeft(vote_end.getTime() - vote_start.getTime());
             if (!canVote) {
-                setCanVote(true);
+                dispatch(changeCanVote(true));
             }
         } else {
             if (canVote) {
-                setCanVote(false);
+                dispatch(changeCanVote(false));
             }
             if (!canSeeResults) {
-                setCanSeeResults(true);
+                dispatch(changeCanSeeResults(true));
             }
         }
 
@@ -59,10 +58,20 @@ export default function Timer({start_date}: propsType) {
     });
 
     function getFormattedTime() {
-        let days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-        let hours = Math.floor(timeLeft / (1000 * 60 * 60) % 60);
-        let minutes = Math.floor(timeLeft / (1000 * 60) % 60);
-        let seconds = Math.floor(timeLeft / 1000 % 60);
+        let current = timeLeft;
+
+        console.log(current);
+        let days = Math.floor(current / (1000 * 60 * 60 * 24));
+        current = current - days * (1000 * 60 * 60 * 24);
+        console.log(current);
+        let hours = Math.floor(current / (1000 * 60 * 60) % 60);
+        current = current - hours * (1000 * 60 * 60);
+        console.log(current);
+        let minutes = Math.floor(current / (1000 * 60) % 60);
+        current = current - minutes * (1000 * 60);
+        console.log(current);
+        let seconds = Math.floor(current / 1000 % 60);
+        console.log("asdd")
 
         let formattedDays = String(days).padStart(2, "0");
         let formattedHours = String(hours).padStart(2, "0");

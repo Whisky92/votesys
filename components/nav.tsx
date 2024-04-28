@@ -2,16 +2,15 @@
 // used source for popup: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_popup_form
 
 import React, { MouseEvent, useEffect } from "react";
-import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link} from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { useContext } from "react";
-import { votingTimeContext } from "@app/utils/my_context/is_voting_time_context"; 
+import { useSelector } from "react-redux";
+import { RootState } from "@app/utils/my_redux-store/store";
 
 export default function Nav() {
   let ids: Array<string>;
   const router = useRouter();
-  const {canVote, setCanVote,
-         canSeeResults, setCanSeeResults} = useContext(votingTimeContext);
+  const { canSeeResults } = useSelector((state: RootState) => state.isVotingTime.value);
 
   function onHomePress(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault();

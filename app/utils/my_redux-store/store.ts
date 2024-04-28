@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import voteTimeReducer from "./slices/intervalSlice";
+import isVotingTimeReducer from "./slices/isVotingTimeSlice";
 
 export const store = configureStore({
     reducer: {
         voteTime: voteTimeReducer,
+        isVotingTime: isVotingTimeReducer
     }
 })
 
