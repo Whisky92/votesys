@@ -23,25 +23,7 @@ interface Post {
 
 export default function VoteField() {
 
-    let ids: Array<string>;
     const router = useRouter();
-
-    const [posts, setPosts] = useState<Post[]>([]);
-
-    useEffect(() => {
-        ids = ["1", "2", "3"];
-        const fetchData = async () => {
-          try {
-            const response = await axios.get('http://127.0.0.1:5000/vote/get-voting-interval');
-            const data = response.data;
-            console.log(data);
-          } catch (error) {
-            console.log("Error occured");
-          }
-        }
-
-        fetchData();
-    });
 
     function closeForm() {
         const myForm = document.getElementById("myForm");
@@ -51,19 +33,21 @@ export default function VoteField() {
         }
       }
 
-
     function handleSubmit(event: React.FormEvent<MyFormElements>) {
         event.preventDefault();
-        
         const field = event.currentTarget.id_input_field;
-        console.log(field.value);
-        if (ids.includes(field.value)) {
-          router.push(`/vote?id=${field.value}`);
-          closeForm();
-        } else {
-          alert("The given id is invalid!");
-          field.value = "";
-        }
+
+        axios.get(`http://localhost:5000/vote/${field.value}`)
+        .then((response) => {
+            const status = response.data.status;
+            if (status === "success") {
+              router.push(`/vote?id=${field.value}`);
+              closeForm();
+            } else {
+              alert("The given id is invalid!");
+              field.value = "";
+            }
+        })
       }
 
     return (

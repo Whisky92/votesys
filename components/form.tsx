@@ -1,5 +1,7 @@
 'use client'
 
+import axios, { AxiosResponse, AxiosRequestConfig, RawAxiosRequestHeaders } from "axios"
+
 interface MyFormElements extends HTMLFormControlsCollection {
     joe_biden_radioBtn: HTMLInputElement
     donald_trump_radioBtn: HTMLInputElement
@@ -9,12 +11,26 @@ interface MyFormElements extends HTMLFormElement {
     readonly elements: MyFormElements
 }
 
-function sendVote(event: React.FormEvent<MyFormElements>) {
-    event.preventDefault();
-    console.log("ASD");
+type propsType = {
+    id: string | null;
 }
 
-export default function MyForm() {
+export default function MyForm({id}: propsType) {
+
+    function sendVote(event: React.FormEvent<MyFormElements>) {
+        event.preventDefault();
+
+        axios.post("http://localhost:5000/vote/submit-vote", {
+            "voter_id": id
+        })
+        .then((response) => {
+            console.log(response);
+        })
+
+
+        console.log("ASD");
+    }
+    
     return (
         <form onSubmit={sendVote} className="max-w-full w-full flex flex-col justify-center">
                 <div className="w-full basis-1/2 flex flex-row">

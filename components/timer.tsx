@@ -60,18 +60,13 @@ export default function Timer({start_date}: propsType) {
     function getFormattedTime() {
         let current = timeLeft;
 
-        console.log(current);
         let days = Math.floor(current / (1000 * 60 * 60 * 24));
         current = current - days * (1000 * 60 * 60 * 24);
-        console.log(current);
         let hours = Math.floor(current / (1000 * 60 * 60) % 60);
         current = current - hours * (1000 * 60 * 60);
-        console.log(current);
         let minutes = Math.floor(current / (1000 * 60) % 60);
         current = current - minutes * (1000 * 60);
-        console.log(current);
         let seconds = Math.floor(current / 1000 % 60);
-        console.log("asdd")
 
         let formattedDays = String(days).padStart(2, "0");
         let formattedHours = String(hours).padStart(2, "0");
