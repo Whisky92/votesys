@@ -3,23 +3,42 @@
 import MyForm from "@components/form";
 import Voted from "@components/already_voted";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import axios from "axios";
 
 export default function Home() {
 
     const searchParams = useSearchParams();
     const id = searchParams.get("id");
-    const [requestFulfilled, setRequestFulfilled] = useState<boolean>(false);
-    console.log("megyen: " + id);
+    const [requestPending, setRequestPending] = useState<boolean>(true);
+    const alreadyVoted = useRef<boolean>(false);
 
     useEffect(() => {
+        if (requestPending) {
+            axios.get(`http://localhost:5000/vote/hasVoted/${id}`)
+            .then((response) => {
+                const hasVoted = response.data;
+                if (hasVoted == "True") {
+                    alreadyVoted.current = true;
+                }
+                setRequestPending(false);
+            })
+        }
     })
 
     return (
-        <section className="w-3/4 max-w-full main_section">
-            { true ? 
-            (<MyForm id={id}/>) : 
-            (<Voted />) }
-        </section>
+        ( requestPending ) ? 
+            (<section className="w-3/4 max-w-full main_section" />) :
+            (alreadyVoted.current) ?
+                (
+                <section className="w-3/4 max-w-full main_section">
+                    <Voted />
+                </section>
+                ) :
+                (
+                <section className="w-3/4 max-w-full main_section">
+                    <MyForm id={id}/>
+                </section>
+                )
     );
 }

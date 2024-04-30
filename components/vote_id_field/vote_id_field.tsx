@@ -15,13 +15,6 @@ interface MyFormElements extends HTMLFormElement {
   readonly elements: MyFormElements
 }
 
-const BASE_URL = 'http://127.0.0.1:5000/vote/get-voting-interval';
-
-interface Post {
-  id: number;
-  title: string;
-}
-
 export default function VoteField() {
 
     const router = useRouter();
@@ -37,10 +30,8 @@ export default function VoteField() {
     function handleSubmit(event: React.FormEvent<MyFormElements>) {
         event.preventDefault();
         const field = event.currentTarget.id_input_field;
-        console.log(field.value);
         axios.get(`http://localhost:5000/vote/${field.value}`)
         .then((response) => {
-            console.log(response.data);
             const status = response.data.status;
             if (status === "success") {
               router.push(`/vote?id=${field.value}`);

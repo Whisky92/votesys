@@ -14,6 +14,7 @@ type propsType = {
 
 export default function TimerContainer({my_start_date}: propsType) {
     const vote_time = useSelector((state: RootState) => state.voteTime.value);
+    const is_voting_time = useSelector((state: RootState) => state.isVotingTime.value);
     const [requestFulfilled, setRequestFulfilled] = useState<boolean>(false);
     const dispatch = useDispatch();
 
@@ -23,9 +24,9 @@ export default function TimerContainer({my_start_date}: propsType) {
                 .then((response) => {
                     const start = new Date(Date.parse(response.data.datetime));
                     const end = new Date(Date.parse(response.data.datetime));
+                    start.setMinutes(1);
+                    end.setMinutes(40);
                     const isVotePossible = my_start_date >= start && my_start_date <= end;
-                    start.setMinutes(46);
-                    end.setMinutes(55);
                     
                     dispatch(updateTime({ value: {
                         vote_start: start,

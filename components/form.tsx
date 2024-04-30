@@ -1,6 +1,9 @@
 'use client'
 
+import { RootState } from "@app/utils/my_redux-store/store"
 import axios, { AxiosResponse, AxiosRequestConfig, RawAxiosRequestHeaders } from "axios"
+import { useRouter } from "next/navigation"
+import { useSelector } from "react-redux"
 
 interface MyFormElements extends HTMLFormControlsCollection {
     joe_biden_radioBtn: HTMLInputElement
@@ -16,49 +19,50 @@ type propsType = {
 }
 
 export default function MyForm({id}: propsType) {
+    const is_voting_time = useSelector((state: RootState) => state.isVotingTime.value);
+    const router = useRouter();
 
     type VoteType = {
         message: string;
         voter_id: string;
-    }   
+    }
 
     function sendVote(event: React.FormEvent<MyFormElements>) {
+        event.preventDefault();
+        
         const trumpSelected = event.currentTarget.elements.donald_trump_radioBtn.checked;
         const bidenSelected = event.currentTarget.elements.joe_biden_radioBtn.checked;
-        console.log(trumpSelected);
-        console.log(bidenSelected);
-        console.log(!trumpSelected && !bidenSelected);
-        console.log(typeof id);
-        console.log(id);
         if (trumpSelected || bidenSelected) {
             const selectedCandidate = trumpSelected ? "REP" : "DEM";
-            console.log(typeof selectedCandidate);
             const requestBody = {
                 message: selectedCandidate,
                 voter_id: id
               };
-            console.log(selectedCandidate);
 
             axios.post<VoteType>("http://localhost:5000/vote/submit-vote", {
                 message: selectedCandidate,
                 voter_id: id
             })
-                .then((response) => {
-                    console.log(response);
+                .then(() => {
+                    router.push("/");
                 })
-                .catch((error) => {
-                    console.log(error);
+                .catch(() => {
+                    alert("An error has occured");
                 })
         } else {
             alert("Select a candidate!");
         }
+    }
+
+    function votingTimeElapsed(event: React.FormEvent<MyFormElements>) {
         event.preventDefault();
 
-
+        alert("Voting time has already elapsed");
+        router.push("/");
     }
     
     return (
-        <form onSubmit={sendVote} className="max-w-full w-full flex flex-col justify-center">
+        <form onSubmit={is_voting_time.canVote ? sendVote : votingTimeElapsed} className="max-w-full w-full flex flex-col justify-center">
                 <div className="w-full basis-1/2 flex flex-row">
                     <div className="basis-1/2 flex flex-col items-center">
                         <img
