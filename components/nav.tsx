@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "@app/utils/my_redux-store/store";
 
 export default function Nav() {
-  let ids: Array<string>;
   const router = useRouter();
   const { canSeeResults } = useSelector((state: RootState) => state.isVotingTime.value);
 

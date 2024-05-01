@@ -20,12 +20,11 @@ export default function TimerContainer({my_start_date}: propsType) {
 
     useEffect(() => {
         if (!requestFulfilled) {
-            axios.get("http://worldtimeapi.org/api/timezone/Europe/Budapest")
+            axios.get("http://localhost:5000/vote/get-voting-interval")
                 .then((response) => {
-                    const start = new Date(Date.parse(response.data.datetime));
-                    const end = new Date(Date.parse(response.data.datetime));
-                    start.setMinutes(1);
-                    end.setMinutes(40);
+                    console.log(response.data);
+                    const start = new Date(Date.parse(response.data.vote_start));
+                    const end = new Date(Date.parse(response.data.vote_end));
                     const isVotePossible = my_start_date >= start && my_start_date <= end;
                     
                     dispatch(updateTime({ value: {

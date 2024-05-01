@@ -29,15 +29,11 @@ export default function MyForm({id}: propsType) {
 
     function sendVote(event: React.FormEvent<MyFormElements>) {
         event.preventDefault();
-        
+
         const trumpSelected = event.currentTarget.elements.donald_trump_radioBtn.checked;
         const bidenSelected = event.currentTarget.elements.joe_biden_radioBtn.checked;
         if (trumpSelected || bidenSelected) {
             const selectedCandidate = trumpSelected ? "REP" : "DEM";
-            const requestBody = {
-                message: selectedCandidate,
-                voter_id: id
-              };
 
             axios.post<VoteType>("http://localhost:5000/vote/submit-vote", {
                 message: selectedCandidate,
