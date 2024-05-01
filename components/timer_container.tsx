@@ -41,7 +41,7 @@ export default function TimerContainer({my_start_date}: propsType) {
     return (
         (requestFulfilled) ? 
     (
-        <section className="w-full flex flex-col pt-20">
+        <section className="w-full flex flex-col">
             <Timer start_date={ my_start_date }/>
         </section>
     ) :
