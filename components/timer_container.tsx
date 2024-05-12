@@ -8,11 +8,8 @@ import Timer from "./timer";
 import { RootState } from "@app/utils/my_redux-store/store";
 import { changeCanSeeResults, changeCanVote } from "@app/utils/my_redux-store/slices/isVotingTimeSlice";
 
-type propsType = {
-    my_start_date: Date;
-}
-
-export default function TimerContainer({my_start_date}: propsType) {
+export default function TimerContainer() {
+    const my_start_date = new Date();
     const vote_time = useSelector((state: RootState) => state.voteTime.value);
     const is_voting_time = useSelector((state: RootState) => state.isVotingTime.value);
     const [requestFulfilled, setRequestFulfilled] = useState<boolean>(false);
